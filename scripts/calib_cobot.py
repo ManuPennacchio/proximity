@@ -54,6 +54,7 @@ p4u=[0,0,0]+offs_4
 x_lim=(-0.5,1.5)
 y_lim=(-0.5,1.5)
 z_lim=(-0.5,1.5)
+dim_ax=0.5
 
 
 ##############################################################################################################################################
@@ -453,16 +454,16 @@ class Plot:
         ys=[]
         zs=[]
         for i in range(len(p)):
-            ax.scatter(p[i][0], p[i][1], p[i][2], color='b')
+            ax.scatter(p[i][0], p[i][1], p[i][2], color='black')
             index="p"+str(i)
-            ax.text(p[i][0], p[i][1], p[i][2], index)    
+            ax.text(p[i][0], p[i][1], p[i][2]+0.075, index)    
     
     #metodo che permette di visualizzare un pinao definito come [a,b,c,d]
     def plot_plane(self,piano):
         xlim = self.ax.get_xlim()
         ylim = self.ax.get_ylim()
-        X,Y = np.meshgrid(np.arange(0.5, 0.5),
-                          np.arange(0.5, 0.5))
+        X,Y = np.meshgrid(np.arange(xlim),
+                          np.arange(ylim))
         Z = np.zeros(X.shape)
         for r in range(X.shape[0]):
             for c in range(X.shape[1]):
@@ -478,32 +479,37 @@ class Plot:
 
         ax=self.ax
         arrow_prop_dict = dict(mutation_scale=20, arrowstyle='->', shrinkA=0, shrinkB=0)
+        arrow_prop_dict_t = dict(mutation_scale=20, arrowstyle='-', shrinkA=0, shrinkB=0)
 
-        xr = Arrow3D([0, 1], [0, 0], [0, 0], **arrow_prop_dict, color='r')
+        xr = Arrow3D([0, 1*dim_ax], [0, 0], [0, 0], **arrow_prop_dict, color='r')
         ax.add_artist(xr)
-        yr = Arrow3D([0, 0], [0, 1], [0, 0], **arrow_prop_dict, color='b')
+        yr = Arrow3D([0, 0], [0, 1*dim_ax], [0, 0], **arrow_prop_dict, color='b')
         ax.add_artist(yr)
-        zr = Arrow3D([0, 0], [0, 0], [0, 1], **arrow_prop_dict, color='g')
+        zr = Arrow3D([0, 0], [0, 0], [0, 1*dim_ax], **arrow_prop_dict, color='g')
         ax.add_artist(zr)
 
-        x_ws = Arrow3D([M[0,3], M[0,3]+M[0,0]], [M[1,3], M[1,3]+M[0,1]], [M[2,3], M[2,3]+M[0,2]], **arrow_prop_dict, color='r')
+        x_ws = Arrow3D([M[0,3], M[0,3]+(M[0,0]*dim_ax)], [M[1,3], M[1,3]+(M[0,1]*dim_ax)], [M[2,3], M[2,3]+(M[0,2]*dim_ax)], **arrow_prop_dict, color='r')
         ax.add_artist(x_ws)
-        y_ws = Arrow3D([M[0,3], M[0,3]+M[1,0]], [M[1,3], M[1,3]+M[1,1]], [M[2,3], M[2,3]+M[1,2]], **arrow_prop_dict, color='b')
+        y_ws = Arrow3D([M[0,3], M[0,3]+(M[1,0]*dim_ax)], [M[1,3], M[1,3]+(M[1,1]*dim_ax)], [M[2,3], M[2,3]+(M[1,2]*dim_ax)], **arrow_prop_dict, color='b')
         ax.add_artist(y_ws)
-        z_ws = Arrow3D([M[0,3], M[0,3]+M[2,0]], [M[1,3], M[1,3]+M[2,1]], [M[2,3], M[2,3]+M[2,2]], **arrow_prop_dict, color='g')
+        z_ws = Arrow3D([M[0,3], M[0,3]+(M[2,0]*dim_ax)], [M[1,3], M[1,3]+(M[2,1]*dim_ax)], [M[2,3], M[2,3]+(M[2,2]*dim_ax)], **arrow_prop_dict, color='g')
         ax.add_artist(z_ws)
-        t = Arrow3D([0, M[0,3]], [0, M[1,3]], [0, M[2,3]], **arrow_prop_dict, color='y')
-        ax.add_artist(t)
 
-        ax.text(0.0, 0.0, -0.1, r'$o_R$')
-        ax.text(1.1, 0, 0, r'$x_R$')
-        ax.text(0, 1.1, 0, r'$y_R$')
-        ax.text(0, 0, 1.1, r'$z_R$')
 
-        ax.text(M[0,3]-0.1*M[0,3], M[1,3]-0.1*M[1,3], M[2,3]-M[2,3]*0.1, r'$o(WS)$')
-        ax.text(M[0,3]+M[0,0]+0.1*M[0,0], M[1,3]+M[0,1]+0.1*M[0,1], M[2,3]+M[0,2]+0.1*M[0,2], r'$x(WS)$')
-        ax.text(M[1,3]+M[1,0]+0.1*M[1,0], M[1,3]+M[1,1]+0.1*M[1,1], M[2,3]+M[1,2]+0.1*M[1,2], r'$y(WS)$')
-        ax.text(M[1,3]+M[2,0]+0.1*M[2,0], M[1,3]+M[2,1]+0.1*M[2,1], M[2,3]+M[2,2]+0.1*M[2,2], r'$z(WS)$')
+        t0 = Arrow3D([0, M[0,3]*(1-dim_ax)], [0, M[1,3]*(1-dim_ax)], [0, M[2,3]*(1-dim_ax)], **arrow_prop_dict_t, color='y')
+        ax.add_artist(t0)
+        t1 = Arrow3D([M[0,3]*(1-dim_ax),M[0,3]], [M[1,3]*(1-dim_ax),M[0,3]], [M[2,3]*(1-dim_ax),M[0,3]], **arrow_prop_dict, color='y')
+        ax.add_artist(t1)
+
+        ax.text(-0.1*dim_ax, 0.0, -0.1*dim_ax, r'$o_R$',color='y')
+        ax.text(1.1*dim_ax, 0, 0, r'$x_R$',color='r')
+        ax.text(0, 1.1*dim_ax+0.04, 0, r'$y_R$',color='b')
+        ax.text(0, 0, 1.1*dim_ax, r'$z_R$',color='g')
+
+        #ax.text(M[0,3], M[1,3], M[2,3], r'$o(WS)$',color='y')
+        ax.text(M[0,3]+(M[0,0]+0.1*M[0,0])*dim_ax, M[1,3]+(M[0,1]+0.1*M[0,1])*dim_ax, M[2,3]+(M[0,2]+0.1*M[0,2])*dim_ax, r'$x(WS)$',color='r')
+        ax.text(M[1,3]+(M[1,0]+0.1*M[1,0])*dim_ax, M[1,3]+(M[1,1]+0.1*M[1,1])*dim_ax, M[2,3]+(M[1,2]+0.1*M[1,2])*dim_ax, r'$y(WS)$',color='b')
+        ax.text(M[1,3]+(M[2,0]+0.1*M[2,0])*dim_ax, M[1,3]+(M[2,1]+0.1*M[2,1])*dim_ax, M[2,3]+(M[2,2]+0.1*M[2,2])*dim_ax, r'$z(WS)$',color='g')
 
         ax.view_init(azim=20, elev=10)
         #ax.set_axis_off()
@@ -523,9 +529,11 @@ def main():
     util=Util()
     plot=Plot()
 
-    p=calib.get_points()
-    [p_position,p_orientation]=util.from_pose_to_array(p)
+    #p=calib.get_points()
+    #[p_position,p_orientation]=util.from_pose_to_array(p)
     #print(p_orientation)
+
+    p_position=[[1,1,1],[1,2,1],[2,1,1]]
     M=calib.get_matrix(p_position)
     
     plot.plot_frame(M)
