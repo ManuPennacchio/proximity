@@ -56,7 +56,7 @@ dim_ax=0.5
 #CLASSE Mover
 ##############################################################################################################################################
 
-class CartesianMover():
+class Cartesian_mover():
     """ create a cartesian mover thread and move cobot to position=[x,y,z] coordinats in meters. When cobot is in position it calls the given callback function  """
     def __init__(self,speed,accel):
         self.util=Util()
@@ -76,7 +76,7 @@ class CartesianMover():
         self.timeout=None
         self.tip_name = 'right_hand'
 
-    def MoveToPosition(self,p,M):
+    def move_to_position(self,p,M):
         try:
             limb = Limb()
             traj_options = TrajectoryOptions()
@@ -522,30 +522,30 @@ def main():
             pose_ws_grasp.append(Pose(Point(position_ws[i][0]+offs_x+grasp_x,position_ws[i][1]+offs_y+grasp_y,position_ws[i][2]+offs_z+grasp_z),relative_orientation))
 
     #definizione del percorso
-    movimento_veloce=CartesianMover(v_spostamenti,a_spostamenti)
-    movimento_lento=CartesianMover(v_avvicinamenti,a_avvicinamenti)
+    movimento_veloce=Cartesian_mover(v_spostamenti,a_spostamenti)
+    movimento_lento=Cartesian_mover(v_avvicinamenti,a_avvicinamenti)
     input('premere il tasto INVIO per iniziare la prima triettoria')
     for i in range(30):
-        movimento_veloce.MoveToPosition(pose_ws_grasp[0],M)
-        movimento_lento.MoveToPosition(pose_ws[0],M)
+        movimento_veloce.move_to_position(pose_ws_grasp[0],M)
+        movimento_lento.move_to_position(pose_ws[0],M)
         #util.wait_key()
-        movimento_veloce.MoveToPosition(pose_ws_grasp[0],M)
-        movimento_veloce.MoveToPosition(pose_ws_grasp[1],M)
-        movimento_lento.MoveToPosition(pose_ws[1],M)
+        movimento_veloce.move_to_position(pose_ws_grasp[0],M)
+        movimento_veloce.move_to_position(pose_ws_grasp[1],M)
+        movimento_lento.move_to_position(pose_ws[1],M)
         #util.wait_key()
-        movimento_veloce.MoveToPosition(pose_ws_grasp[1],M)
-        movimento_veloce.MoveToPosition(pose_ws_grasp[2],M)
-        movimento_lento.MoveToPosition(pose_ws[2],M)
+        movimento_veloce.move_to_position(pose_ws_grasp[1],M)
+        movimento_veloce.move_to_position(pose_ws_grasp[2],M)
+        movimento_lento.move_to_position(pose_ws[2],M)
         #util.wait_key()
-        movimento_veloce.MoveToPosition(pose_ws_grasp[2],M)
-        movimento_veloce.MoveToPosition(pose_ws_grasp[3],M)
-        movimento_lento.MoveToPosition(pose_ws[3],M)
+        movimento_veloce.move_to_position(pose_ws_grasp[2],M)
+        movimento_veloce.move_to_position(pose_ws_grasp[3],M)
+        movimento_lento.move_to_position(pose_ws[3],M)
         #util.wait_key()
-        movimento_veloce.MoveToPosition(pose_ws_grasp[3],M)
-        movimento_veloce.MoveToPosition(pose_ws_grasp[4],M)
-        movimento_lento.MoveToPosition(pose_ws[4],M)
+        movimento_veloce.move_to_position(pose_ws_grasp[3],M)
+        movimento_veloce.move_to_position(pose_ws_grasp[4],M)
+        movimento_lento.move_to_position(pose_ws[4],M)
         #util.wait_key()
-        movimento_veloce.MoveToPosition(pose_ws_grasp[4],M)
+        movimento_veloce.move_to_position(pose_ws_grasp[4],M)
 
     
     
