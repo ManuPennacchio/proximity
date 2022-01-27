@@ -338,10 +338,10 @@ class Calib:
             i=(v01/np.linalg.norm(v01))
             j=(np.cross(k,i))
 
-            mat=[[float(i[0]),float(j[0]),float(k[0]),float(origin[0])],
-                 [float(i[1]),float(j[1]),float(k[1]),float(origin[1])],
-                 [float(i[2]),float(j[2]),float(k[2]),float(origin[2])],
-                 [float(0),float(0),float(0),float(1)]]
+            mat=[[i[0],j[0],k[0],origin[0]],
+                 [i[1],j[1],k[1],origin[1]],
+                 [i[2],j[2],k[2],origin[2]],
+                 [0.0, 0.0, 0.0, 1.0]]
 
             plot.plot_frame(mat)
             plot.plot_p(p)
