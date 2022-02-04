@@ -52,6 +52,8 @@ V_TRY_POSE=0.1
 A_TRY_POSE=0.1
 V_TRY_GRASP=0.1
 A_TRY_GRASP=0.1
+V_CONTROLLER=0.2
+A_CONTROLLER=0.1
 N_PROVE=30
 
 #limiti del WS (utilizzato per il plot)
@@ -75,7 +77,7 @@ calibration=None
 class Interface():
     def __init__(self):
         limb="right"
-        self.mover=Cartesian_mover(1,2)
+        self.mover=Cartesian_mover(V_CONTROLLER,A_CONTROLLER)
         self._arm = limb
         self._limb = intera_interface.Limb(self._arm)
         print("Getting robot state... ")
